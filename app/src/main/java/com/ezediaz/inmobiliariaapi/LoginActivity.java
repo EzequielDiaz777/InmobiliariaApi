@@ -14,7 +14,6 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         vm = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(LoginActivityViewModel.class);
-        vm.deslogueo();
         binding.btnLogearse.setOnClickListener(view -> {
             String email = binding.etEmail.getText().toString();
             String password = binding.etPassword.getText().toString();

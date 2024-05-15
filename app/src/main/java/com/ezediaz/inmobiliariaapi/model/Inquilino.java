@@ -2,8 +2,7 @@ package com.ezediaz.inmobiliariaapi.model;
 
 import java.io.Serializable;
 
-public class Propietario implements Serializable {
-
+public class Inquilino implements Serializable {
     private int id;
     private String dni;
     private String nombre;
@@ -11,8 +10,10 @@ public class Propietario implements Serializable {
     private String email;
     private String telefono;
 
-    public Propietario(){}
-    public Propietario(int id, String dni, String nombre, String apellido, String email, String telefono) {
+    public Inquilino(){
+    }
+
+    public Inquilino(int id, String dni, String nombre, String apellido, String email, String telefono) {
         this.id = id;
         this.dni = dni;
         this.nombre = nombre;

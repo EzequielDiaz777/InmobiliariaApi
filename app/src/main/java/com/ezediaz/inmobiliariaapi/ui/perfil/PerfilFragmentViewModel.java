@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -22,11 +23,11 @@ import retrofit2.Response;
 
 public class PerfilFragmentViewModel extends AndroidViewModel {
     private MutableLiveData<Propietario> mPropietario;
-    private Context context;
+    private MutableLiveData<String> mGuardar;
+    private MutableLiveData<Boolean> mHabilitar;
 
     public PerfilFragmentViewModel(@NonNull Application application) {
         super(application);
-        this.context = application.getApplicationContext();
     }
 
     public LiveData<Propietario> getMPropietario() {
@@ -36,25 +37,68 @@ public class PerfilFragmentViewModel extends AndroidViewModel {
         return mPropietario;
     }
 
+    public LiveData<String> getMGuardar() {
+        if(mGuardar == null){
+            mGuardar = new MutableLiveData<>();
+        }
+        return mGuardar;
+    }
+
+    public LiveData<Boolean> getMHabilitar() {
+        if(mHabilitar == null){
+            mHabilitar = new MutableLiveData<>();
+        }
+        return mHabilitar;
+    }
+
+    public void editarDatos(String boton, Propietario propietario){
+        if(boton.equals("Editar perfil")){
+            mGuardar.setValue("Guardar perfil");
+            mHabilitar.setValue(true);
+        } else {
+            mGuardar.setValue("Editar perfil");
+            mHabilitar.setValue(false);
+            String token = ApiClient.leerToken(getApplication());
+            if (token != null) {
+                ApiClient.MisEndPoints api = ApiClient.getEndPoints();
+                Call<Propietario> call = api.modificarUsuario(token, propietario);
+                call.enqueue(new Callback<Propietario>() {
+                    @Override
+                    public void onResponse(Call<Propietario> call, Response<Propietario> response) {
+                        if (response.isSuccessful()) {
+                            mPropietario.postValue(response.body());
+                            Toast.makeText(getApplication(), "Perfil actualizado", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplication(), "Falla en la actualización", Toast.LENGTH_LONG).show();
+                            Log.d("salida", response.message());
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<Propietario> call, Throwable throwable) {
+                        Log.d("salida", "Falla: " + throwable.getMessage());
+                    }
+                });
+            }
+        }
+    }
+
     public void miPerfil(){
-        SharedPreferences sharedPreferences = getApplication().getSharedPreferences("auth_prefs", Context.MODE_PRIVATE);
-        String token = sharedPreferences.getString("token", null);
+        String token = ApiClient.leerToken(getApplication());
         if (token != null) {
             ApiClient.MisEndPoints api = ApiClient.getEndPoints();
-            Call<Propietario> call = api.miPerfil("Bearer " + token);
+            Call<Propietario> call = api.miPerfil(token);
             call.enqueue(new Callback<Propietario>() {
                 @Override
                 public void onResponse(Call<Propietario> call, Response<Propietario> response) {
                     if (response.isSuccessful()) {
-                        mPropietario.setValue(response.body());
+                        mPropietario.postValue(response.body());
                     } else {
                         Log.d("salida", "Incorrecto");
                     }
                 }
-
                 @Override
                 public void onFailure(Call<Propietario> call, Throwable throwable) {
-                    Log.d("salida", "Falla");
+                    Log.d("salida", "Falla: " + throwable.getMessage());
                 }
             });
         } else {

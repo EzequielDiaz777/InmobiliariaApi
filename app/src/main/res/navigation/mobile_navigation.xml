@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_mapa">
+    <fragment
+        android:id="@+id/nav_mapa"
+        android:name="com.ezediaz.inmobiliariaapi.ui.mapa.MapaFragment"
+        android:label="Inicio"
+        tools:layout="@layout/fragment_mapa" />
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.ezediaz.inmobiliariaapi.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
-
-    <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.ezediaz.inmobiliariaapi.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_salir"
+        android:name="com.ezediaz.inmobiliariaapi.ui.deslogeo.SalirFragment"
+        android:label="Deslogueo"
+        tools:layout="@layout/fragment_salir" />
 
     <fragment
         android:id="@+id/nav_perfil"
         android:name="com.ezediaz.inmobiliariaapi.ui.perfil.PerfilFragment"
         android:label="Mi perfil"
-        tools:layout="@layout/fragment_perfil" />
+        tools:layout="@layout/fragment_perfil" >
+    </fragment>
 </navigation>
