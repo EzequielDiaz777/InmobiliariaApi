@@ -23,6 +23,7 @@ public class LoginActivityViewModel extends AndroidViewModel {
 
     public void logueo(String usuario, String clave) {
         ApiClient.MisEndPoints api = ApiClient.getEndPoints();
+
         Call<String> call = api.login(usuario, clave);
         call.enqueue(new Callback<String>() {
             @Override
@@ -44,6 +45,31 @@ public class LoginActivityViewModel extends AndroidViewModel {
         });
     }
 
+    public void enviarEmail(String email){
+        ApiClient.MisEndPoints api = ApiClient.getEndPoints();
+        if(!email.isEmpty()){
+            Call<String> call = api.olvidePassword(email);
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(getApplication(), "Email enviado a su correo para recuperar la contraseña", Toast.LENGTH_LONG).show();
+                    } else {
+                        Log.d("salida", response.message());
+                        Toast.makeText(getApplication(), "Email incorrecto o no está registrado", Toast.LENGTH_LONG).show();
+                    }
+                }
+                @Override
+                public void onFailure(Call<String> call, Throwable throwable) {
+                    Toast.makeText(getApplication(), "Falla en la recuperación del email", Toast.LENGTH_LONG).show();
+                    Log.d("salida", throwable.getMessage());
+                }
+            });
+        } else {
+            Toast.makeText(getApplication(), "Por favor ingrese un email", Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void guardarToken(String token) {
        ApiClient.guardarToken(token, getApplication());
     }
@@ -52,12 +78,5 @@ public class LoginActivityViewModel extends AndroidViewModel {
         Intent intent = new Intent(getApplication(), MenuActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Limpiar la pila de actividades
         getApplication().startActivity(intent);
-    }
-
-    public void checkLoggedIn() {
-        String token = sharedPreferences.getString("token", null);
-        if (token != null) {
-            iniciarMenuActivity();
-        }
     }
 }

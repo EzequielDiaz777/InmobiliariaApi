@@ -17,6 +17,18 @@
         tools:layout="@layout/fragment_salir" />
 
     <fragment
+        android:id="@+id/nav_lista"
+        android:name="com.ezediaz.inmobiliariaapi.ui.inmueble.ListaFragment"
+        android:label="Inmuebles"
+        tools:layout="@layout/fragment_lista" />
+
+    <fragment
+        android:id="@+id/nav_inmueble"
+        android:name="com.ezediaz.inmobiliariaapi.ui.inmueble.InmuebleFragment"
+        android:label="Detalle del inmueble"
+        tools:layout="@layout/fragment_inmueble" />
+
+    <fragment
         android:id="@+id/nav_perfil"
         android:name="com.ezediaz.inmobiliariaapi.ui.perfil.PerfilFragment"
         android:label="Mi perfil"

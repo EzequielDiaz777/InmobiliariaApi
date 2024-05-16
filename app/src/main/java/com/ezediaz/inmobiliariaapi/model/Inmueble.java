@@ -14,6 +14,7 @@ public class Inmueble implements Serializable {
     private Propietario duenio;
     private Tipo tipo;
     private Uso uso;
+    private int imagenInmueble;
 
     public Inmueble(int id, int propietarioId, int tipoId, int usoId, String direccion, int ambientes, double precio, boolean estado, Propietario duenio, Tipo tipo, Uso uso) {
         this.id = id;
@@ -27,6 +28,29 @@ public class Inmueble implements Serializable {
         this.duenio = duenio;
         this.tipo = tipo;
         this.uso = uso;
+    }
+
+    public Inmueble(int id, int propietarioId, int tipoId, int usoId, String direccion, int ambientes, double precio, boolean estado, Propietario duenio, Tipo tipo, Uso uso, int imagenInmueble) {
+        this.id = id;
+        this.propietarioId = propietarioId;
+        this.tipoId = tipoId;
+        this.usoId = usoId;
+        this.direccion = direccion;
+        this.ambientes = ambientes;
+        this.precio = precio;
+        this.estado = estado;
+        this.duenio = duenio;
+        this.tipo = tipo;
+        this.uso = uso;
+        this.imagenInmueble = imagenInmueble;
+    }
+
+    public int getImagenInmueble() {
+        return imagenInmueble;
+    }
+
+    public void setImagenInmueble(int imagenInmueble) {
+        this.imagenInmueble = imagenInmueble;
     }
 
     public Inmueble() {

@@ -2,9 +2,13 @@ package com.ezediaz.inmobiliariaapi.request;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.ezediaz.inmobiliariaapi.model.Inmueble;
 import com.ezediaz.inmobiliariaapi.model.Propietario;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -15,6 +19,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 public class ApiClient {
     private static final String URL = "http://192.168.1.2:5000/";
@@ -40,6 +45,16 @@ public class ApiClient {
 
         @PUT("Propietarios")
         Call<Propietario> modificarUsuario(@Header("Authorization") String token, @Body Propietario propietario);
+
+        @FormUrlEncoded
+        @POST("Propietarios/olvidecontraseña")
+        Call<String> olvidePassword(@Field("email") String email);
+
+        @GET("Inmuebles")
+        Call<List<Inmueble>> obtenerInmuebles(@Header("Authorization") String token);
+
+        @GET("Inmuebles/{id}")
+        Call<Inmueble> obtenerInmueble(@Header("Authorization") String token, @Path("id") int id);
     }
 
     public static void guardarToken(String token, Context context) {
@@ -52,5 +67,12 @@ public class ApiClient {
     public static String leerToken(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("auth_prefs", Context.MODE_PRIVATE);
         return sharedPreferences.getString("token",null);
+    }
+
+    public static void eliminarToken(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("auth_prefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("token", "");
+        editor.apply();
     }
 }

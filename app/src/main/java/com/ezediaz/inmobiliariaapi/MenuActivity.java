@@ -24,8 +24,8 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        verificarAutenticacion();
-        DrawerLayout drawer = binding.drawerLayout;
+        //verificarAutenticacion();
+        DrawerLayout drawer = binding.menu;
         NavigationView navigationView = binding.navView;
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_mapa, R.id.nav_salir, R.id.nav_perfil)
