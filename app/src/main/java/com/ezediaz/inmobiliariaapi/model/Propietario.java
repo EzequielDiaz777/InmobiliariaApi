@@ -10,15 +10,17 @@ public class Propietario implements Serializable {
     private String apellido;
     private String email;
     private String telefono;
+    private String password;
 
     public Propietario(){}
-    public Propietario(int id, String dni, String nombre, String apellido, String email, String telefono) {
+    public Propietario(int id, String dni, String nombre, String apellido, String email, String telefono, String password) {
         this.id = id;
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.telefono = telefono;
+        this.password = password;
     }
 
     public int getId() {
@@ -67,5 +69,13 @@ public class Propietario implements Serializable {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

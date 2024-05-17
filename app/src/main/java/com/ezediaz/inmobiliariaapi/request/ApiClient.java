@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 
 import com.ezediaz.inmobiliariaapi.model.Inmueble;
 import com.ezediaz.inmobiliariaapi.model.Propietario;
+import com.ezediaz.inmobiliariaapi.model.Tipo;
+import com.ezediaz.inmobiliariaapi.model.Uso;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -46,15 +48,32 @@ public class ApiClient {
         @PUT("Propietarios")
         Call<Propietario> modificarUsuario(@Header("Authorization") String token, @Body Propietario propietario);
 
-        @FormUrlEncoded
-        @POST("Propietarios/olvidecontraseña")
-        Call<String> olvidePassword(@Field("email") String email);
+        @POST("Propietarios/olvidecontraseña/{email}")
+        Call<String> enviarEmail(@Path("email") String email);
 
         @GET("Inmuebles")
         Call<List<Inmueble>> obtenerInmuebles(@Header("Authorization") String token);
 
         @GET("Inmuebles/{id}")
         Call<Inmueble> obtenerInmueble(@Header("Authorization") String token, @Path("id") int id);
+
+        @PUT("Inmuebles/cambiologico/{id}")
+        Call<Void> inmuebleDisponible(@Header("Authorization") String token, @Path("id") int id);
+        
+        @GET("Tipos")
+        Call<List<Tipo>> obtenerTipos(@Header("Authorization") String token);
+
+        @GET("Usos")
+        Call<List<Uso>> obtenerUsos(@Header("Authorization") String token);
+
+        @GET("Tipos/{id}")
+        Call<Tipo> obtenerTipo(@Header("Authorization") String token, @Path("id") int id);
+
+        @GET("Usos/{id}")
+        Call<Uso> obtenerUso(@Header("Authorization") String token, @Path("id") int id);
+
+        @POST("Inmuebles")
+        Call<Inmueble> agregarInmueble(@Header("Authorization") String token,  @Body Inmueble inmueble);
     }
 
     public static void guardarToken(String token, Context context) {

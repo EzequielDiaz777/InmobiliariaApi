@@ -48,7 +48,8 @@ public class LoginActivityViewModel extends AndroidViewModel {
     public void enviarEmail(String email){
         ApiClient.MisEndPoints api = ApiClient.getEndPoints();
         if(!email.isEmpty()){
-            Call<String> call = api.olvidePassword(email);
+            Log.d("email", email);
+            Call<String> call = api.enviarEmail(email);
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
@@ -61,6 +62,8 @@ public class LoginActivityViewModel extends AndroidViewModel {
                 }
                 @Override
                 public void onFailure(Call<String> call, Throwable throwable) {
+                    Throwable error = throwable.getCause();
+                    Log.d("email", error.getMessage());
                     Toast.makeText(getApplication(), "Falla en la recuperación del email", Toast.LENGTH_LONG).show();
                     Log.d("salida", throwable.getMessage());
                 }

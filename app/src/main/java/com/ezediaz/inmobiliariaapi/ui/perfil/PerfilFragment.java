@@ -49,6 +49,14 @@ public class PerfilFragment extends Fragment {
                 binding.etEmailPerfil.setEnabled(aBoolean);
             }
         });
+
+        vm.getMVisible().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer i) {
+                binding.tvPassword.setVisibility(i);
+                binding.etPasswordPerfil.setVisibility(i);
+            }
+        });
         binding.btnEditar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,6 +66,8 @@ public class PerfilFragment extends Fragment {
                 p.setApellido(binding.etApellido.getText().toString());
                 p.setTelefono(binding.etTelefono.getText().toString());
                 p.setEmail(binding.etEmailPerfil.getText().toString());
+                p.setPassword(binding.etPasswordPerfil.getText().toString());
+                binding.etPasswordPerfil.setText("");
                 vm.editarDatos(binding.btnEditar.getText().toString(), p);
             }
         });
