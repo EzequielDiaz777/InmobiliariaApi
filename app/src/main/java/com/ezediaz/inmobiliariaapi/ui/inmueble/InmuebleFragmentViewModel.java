@@ -1,9 +1,14 @@
 package com.ezediaz.inmobiliariaapi.ui.inmueble;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import android.app.Application;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -32,9 +37,11 @@ public class InmuebleFragmentViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<Tipo>> mTipo;
     private MutableLiveData<List<Uso>> mUso;
+    private Context context;
 
     public InmuebleFragmentViewModel(@NonNull Application application) {
         super(application);
+        context = application.getApplicationContext();
     }
 
     public LiveData<Inmueble> getMInmueble() {
@@ -79,13 +86,91 @@ public class InmuebleFragmentViewModel extends AndroidViewModel {
         return mUso;
     }
 
-    public void cargarInmueble(Bundle arguments) {
+    public void cargarInmueble(Bundle arguments, Spinner spinnerTipo, Spinner spinnerUso, Button boton) {
+        Inmueble inmueble = new Inmueble();
         if (arguments != null) {
-            Inmueble inmueble = (Inmueble) arguments.getSerializable("inmueble");
-            if (inmueble != null) {
-                mInmueble.setValue(inmueble);
+            inmueble = (Inmueble) arguments.getSerializable("inmueble");
+            // Obtener el tipo y uso del inmueble
+            Tipo tipoInmueble = inmueble.getTipo();
+            Uso usoInmueble = inmueble.getUso();
+            // Crear adaptadores para los spinners
+            ArrayAdapter<Tipo> tipoAdapter = new ArrayAdapter<>(spinnerTipo.getContext(), android.R.layout.simple_spinner_item);
+            ArrayAdapter<Uso> usoAdapter = new ArrayAdapter<>(spinnerUso.getContext(), android.R.layout.simple_spinner_item);
+            // Asignar los adaptadores a los spinners
+            spinnerTipo.setAdapter(tipoAdapter);
+            spinnerUso.setAdapter(usoAdapter);
+            // Verificar si el tipo y el uso del inmueble no son nulos
+            if (tipoInmueble != null && usoInmueble != null) {
+                // Agregar el tipo y el uso del inmueble a los adaptadores
+                tipoAdapter.add(tipoInmueble);
+                usoAdapter.add(usoInmueble);
+                // Establecer la selección en los spinners
+                spinnerTipo.setSelection(0);
+                spinnerUso.setSelection(0);
             }
+            boton.setVisibility(View.GONE);
+        } else {
+            Tipo tipo = new Tipo();
+            Uso uso = new Uso();
+            inmueble.setTipo(tipo);
+            inmueble.setUso(uso);
+            Spinner spinnerT = new Spinner(context);
+            spinnerT.setEnabled(true);
+            ArrayAdapter<Tipo> tipoAdapter = new ArrayAdapter<>(spinnerT.getContext(), android.R.layout.simple_spinner_item);
+            spinnerT.setAdapter(tipoAdapter);
+            String token = ApiClient.leerToken(getApplication());
+            if (token != null) {
+                ApiClient.MisEndPoints api = ApiClient.getEndPoints();
+                Call<List<Tipo>> call = api.obtenerTipos(token);
+                call.enqueue(new Callback<List<Tipo>>() {
+                    @Override
+                    public void onResponse(Call<List<Tipo>> call, Response<List<Tipo>> response) {
+                        if (response.isSuccessful()) {
+                            response.body().forEach(tipo -> {
+                                tipoAdapter.add(tipo);
+                                spinnerT.setSelection(tipoAdapter.getPosition(tipo));
+                            });
+                            spinnerT.setSelection(0);
+                        } else {
+                            Toast.makeText(getApplication(), "Falla en el dado de alta del inmueble", Toast.LENGTH_LONG).show();
+                            Log.d("salida", response.message());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Tipo>> call, Throwable throwable) {
+                        Log.d("salida", "Falla: " + throwable.getMessage());
+                    }
+                });
+            }
+            Spinner spinnerU = new Spinner(context);
+            spinnerU.setEnabled(true);
+            ArrayAdapter<Uso> usoAdapter = new ArrayAdapter<>(spinnerU.getContext(), android.R.layout.simple_spinner_item);
+            spinnerU.setAdapter(usoAdapter);
+            ApiClient.MisEndPoints api = ApiClient.getEndPoints();
+            Call<List<Uso>> call = api.obtenerUsos(token);
+            call.enqueue(new Callback<List<Uso>>() {
+                @Override
+                public void onResponse(Call<List<Uso>> call, Response<List<Uso>> response) {
+                    if (response.isSuccessful()) {
+                        response.body().forEach(uso -> {
+                            usoAdapter.add(uso);
+                            spinnerU.setSelection(usoAdapter.getPosition(uso));
+                        });
+                        spinnerU.setSelection(0);
+                    } else {
+                        Toast.makeText(getApplication(), "Falla en el dado de alta del inmueble", Toast.LENGTH_LONG).show();
+                        Log.d("salida", response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Uso>> call, Throwable throwable) {
+                    Log.d("salida", "Falla: " + throwable.getMessage());
+                }
+            });
         }
+        mInmueble.setValue(inmueble);
     }
 
     public void cambiarDisponibilidad(boolean disponible, int id) {

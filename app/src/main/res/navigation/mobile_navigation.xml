@@ -21,7 +21,6 @@
         android:name="com.ezediaz.inmobiliariaapi.ui.inmueble.ListaFragment"
         android:label="Inmuebles"
         tools:layout="@layout/fragment_lista" >
-        <!-- Agregar una acción para navegar a AgregarInmuebleFragment -->
         <action
             android:id="@+id/action_listaFragment_to_inmuebleFragment"
             app:destination="@id/nav_inmueble" />

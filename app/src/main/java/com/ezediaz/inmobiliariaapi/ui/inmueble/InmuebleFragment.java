@@ -34,7 +34,7 @@ public class InmuebleFragment extends Fragment {
                 binding.etAmbientes.setText(String.valueOf(inmueble.getAmbientes()));
                 binding.etDireccion.setText(inmueble.getDireccion());
                 binding.etPrecio.setText(String.valueOf(inmueble.getPrecio()));
-                Spinner spinnerUso = binding.spnUso;
+                /*Spinner spinnerUso = binding.spnUso;
                 spinnerUso.setEnabled(false);
                 ArrayAdapter<String> usoAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item);
                 spinnerUso.setAdapter(usoAdapter);
@@ -47,7 +47,7 @@ public class InmuebleFragment extends Fragment {
                 spinnerTipo.setAdapter(tipoAdapter);
                 String tipo = inmueble.getTipo().getNombre();
                 tipoAdapter.add(tipo);
-                spinnerTipo.setSelection(tipoAdapter.getPosition(tipo));
+                spinnerTipo.setSelection(tipoAdapter.getPosition(tipo));*/
                 binding.cbDisponible.setChecked(inmueble.isEstado());
             }
         });
@@ -112,7 +112,7 @@ public class InmuebleFragment extends Fragment {
                 vm.agregarInmueble(binding.btnAgregarInmueble.getText().toString(), i, binding.etAmbientes.getText().toString(), binding.etDireccion.getText().toString(), binding.etPrecio.getText().toString(), binding.spnTipo, binding.spnUso);
             }
         });
-        vm.cargarInmueble(getArguments());
+        vm.cargarInmueble(getArguments(), binding.spnTipo, binding.spnUso, binding.btnAgregarInmueble);
         return root;
     }
 

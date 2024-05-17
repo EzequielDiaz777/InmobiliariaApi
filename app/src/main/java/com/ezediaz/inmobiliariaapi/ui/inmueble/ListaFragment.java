@@ -38,7 +38,6 @@ public class ListaFragment extends Fragment {
                 rv.setAdapter(inmuebleAdapter);
             }
         });
-        // Configurar evento de clic para el botón
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

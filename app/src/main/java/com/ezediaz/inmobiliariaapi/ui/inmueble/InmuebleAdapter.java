@@ -57,6 +57,7 @@ public class InmuebleAdapter extends RecyclerView.Adapter<InmuebleAdapter.ViewHo
                     @Override
                     public void onResponse(Call<Inmueble> call, Response<Inmueble> response) {
                         if(response.isSuccessful()){
+                            bundle.putBoolean("desdeVerMas", true); // Enviar el parámetro
                             bundle.putSerializable("inmueble", response.body());
                             Navigation.findNavController(v).navigate(R.id.nav_inmueble, bundle);
                         } else {
