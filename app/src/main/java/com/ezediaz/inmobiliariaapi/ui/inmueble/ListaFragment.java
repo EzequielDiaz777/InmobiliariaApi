@@ -9,9 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ezediaz.inmobiliariaapi.R;
 import com.ezediaz.inmobiliariaapi.databinding.FragmentListaBinding;
 import com.ezediaz.inmobiliariaapi.model.Inmueble;
 
@@ -34,6 +36,13 @@ public class ListaFragment extends Fragment {
                 RecyclerView rv = binding.listaDeInmuebles;
                 rv.setLayoutManager(glm);
                 rv.setAdapter(inmuebleAdapter);
+            }
+        });
+        // Configurar evento de clic para el botón
+        binding.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_listaFragment_to_inmuebleFragment);
             }
         });
         vm.cargarInmuebles();
