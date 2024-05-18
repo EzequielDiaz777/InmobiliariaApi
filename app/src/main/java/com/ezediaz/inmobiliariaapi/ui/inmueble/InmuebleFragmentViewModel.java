@@ -110,6 +110,7 @@ public class InmuebleFragmentViewModel extends AndroidViewModel {
             }
             boton.setVisibility(View.GONE);
         } else {
+            boton.setVisibility(View.VISIBLE);
             Tipo tipo = new Tipo();
             Uso uso = new Uso();
             inmueble.setTipo(tipo);
